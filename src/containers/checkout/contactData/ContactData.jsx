@@ -9,6 +9,7 @@ import Spinner from '../../../components/UserInterface/spinner/Spinner';
 import Input from '../../../components/UserInterface/input/Input';
 import WithErrorHandler from '../../../hoc/withErrorHandler/WithErrorHandler';
 import * as placeOrder from '../../../store/actions/index'
+import {checkValidity} from '../../../shared/Utility'
 
 class ContactData extends Component {
 	state = {
@@ -113,26 +114,9 @@ class ContactData extends Component {
 	};     
 
 
-	checkValidity(value, rules) {
-		let isValid = true;
-
-		if(rules.required) {
-       isValid = value.trim() !== '' && isValid;
-		}
-
-		if(rules.minLength) {
-			isValid = value.length >= rules.minLength && isValid
-		}
-
-		if(rules.maxLength) {
-			isValid = value.length <= rules.maxLength && isValid
-		}
-
-		return isValid;
-	}
+	
 
 	inputChangedHandler = (event, inputIdentifier) => {
-		console.log(event.target.value)
 
 		const updatedOrderForm = {
 			...this.state.orderForm,
@@ -141,7 +125,7 @@ class ContactData extends Component {
 			...updatedOrderForm[inputIdentifier],
 		};
 		updatedFormElement.value = event.target.value;
-		updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation)
+		updatedFormElement.valid = checkValidity(updatedFormElement.value, updatedFormElement.validation)
 		updatedFormElement.touched = true;
 		updatedOrderForm[inputIdentifier] = updatedFormElement;
 		
